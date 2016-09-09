@@ -5,17 +5,26 @@ module BabySqueel
     # An Active Record association reflection
     attr_reader :_reflection
 
-    def initialize(parent, reflection)
+    # The class to use for the join conditions of polymorphic assocaitions
+    attr_reader :_polymorphic_klass
+
+    def initialize(parent, reflection, polymorphic_klass = nil)
       @parent = parent
       @_reflection = reflection
-      super(@_reflection.klass)
+      @_polymorphic_klass = polymorphic_klass
+      super(polymorphic_klass || @_reflection.klass)
+    end
+
+    def needs_polyamorous?
+      _reflection.polymorphic? || _join == Arel::Nodes::OuterJoin
     end
 
     # See JoinExpression#add_to_tree.
     def add_to_tree(hash)
       polyamorous = Polyamorous::Join.new(
         _reflection.name,
-        _join
+        _join,
+        _polymorphic_klass
       )
 
       hash[polyamorous] ||= {}

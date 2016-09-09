@@ -35,13 +35,31 @@ module BabySqueel
       raise type.new(_scope.model_name, name)
     end
 
-    # @override BabySqueel::Table#resolve
-    def resolve(name)
+    def resolve(name, *args)
       if _scope.column_names.include?(name.to_s)
         self[name]
-      elsif _scope.reflect_on_association(name)
-        association(name)
+      else
+        resolve_association(name, *args)
       end
+    end
+
+    def resolve_association(name, *args)
+      reflection = _scope.reflect_on_association(name)
+
+      if reflection && reflection.polymorphic?
+        raise PolymorphicNotSpecifiedError.new(reflection.name) if args.empty?
+        Association.new(self, reflection, args.first) if args.length == 1
+      elsif reflection && args.empty?
+        Association.new(self, reflection)
+      elsif args.empty?
+        not_found_error!(name)
+      end
+    end
+
+    # @override BabySqueel::Table#method_missing
+    def method_missing(name, *args)
+      return super if block_given?
+      resolve(name, *args) || super
     end
   end
 end

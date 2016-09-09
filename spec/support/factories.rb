@@ -12,10 +12,11 @@ module Factories
     BabySqueel::Relation.new(klass)
   end
 
-  def create_association(klass, association)
+  def create_association(klass, association, polymorphic_klass = nil)
     BabySqueel::Association.new(
       create_relation(klass),
-      klass.reflect_on_association(association)
+      klass.reflect_on_association(association),
+      polymorphic_klass
     )
   end
 end
