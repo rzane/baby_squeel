@@ -87,9 +87,14 @@ module BabySqueel
 
     private
 
-    def method_missing(meth, *args, &block)
-      if !args.empty? && !block_given?
-        func(meth, args)
+    # @override BabySqueel::Relation#method_missing
+    def method_missing(name, *args, &block)
+      return super if block_given?
+
+      if resolution = resolve(name, *args)
+        resolution
+      elsif !args.empty?
+        func(name, args)
       else
         super
       end

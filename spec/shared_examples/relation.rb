@@ -27,7 +27,7 @@ shared_examples_for 'a relation' do
 
   describe '#method_missing' do
     it 'resolves associations' do
-      expect(table.author).to be_a(BabySqueel::Table)
+      expect(table.author).to be_a(BabySqueel::Association)
     end
 
     it 'raises a custom error for things that look like columns' do

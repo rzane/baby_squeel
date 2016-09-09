@@ -148,6 +148,26 @@ describe BabySqueel::ActiveRecord::QueryMethods, '#joining' do
       EOSQL
     end
 
+    describe 'polymorphism' do
+      it 'inner joins' do
+        relation = Picture.joining { imageable(Post) }
+
+        expect(relation).to produce_sql(<<-EOSQL)
+          SELECT "pictures".* FROM "pictures"
+          INNER JOIN "posts" ON "posts"."id" = "pictures"."imageable_id" AND "pictures"."imageable_type" = 'Post'
+        EOSQL
+      end
+
+      it 'outer joins' do
+        relation = Picture.joining { imageable(Post).outer }
+
+        expect(relation).to produce_sql(<<-EOSQL)
+          SELECT "pictures".* FROM "pictures"
+          LEFT OUTER JOIN "posts" ON "posts"."id" = "pictures"."imageable_id" AND "pictures"."imageable_type" = 'Post'
+        EOSQL
+      end
+    end
+
     describe 'nested joins' do
       it 'inner joins' do
         relation = Post.joining { author.comments }
@@ -166,6 +186,16 @@ describe BabySqueel::ActiveRecord::QueryMethods, '#joining' do
           SELECT "posts".* FROM "posts"
           LEFT OUTER JOIN "authors" ON "authors"."id" = "posts"."author_id"
           INNER JOIN "comments" ON "comments"."author_id" = "authors"."id"
+        EOSQL
+      end
+
+      it 'handles polymorphism' do
+        relation = Picture.joining { imageable(Post).comments }
+
+        expect(relation).to produce_sql(<<-EOSQL)
+          SELECT "pictures".* FROM "pictures"
+          INNER JOIN "posts" ON "posts"."id" = "pictures"."imageable_id" AND "pictures"."imageable_type" = 'Post'
+          INNER JOIN "comments" ON "comments"."post_id" = "posts"."id"
         EOSQL
       end
 

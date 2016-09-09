@@ -3,10 +3,23 @@ require 'baby_squeel/association'
 require 'shared_examples/table'
 
 describe BabySqueel::Association do
-  subject(:association) { create_association Author, :posts }
+  subject(:association) {
+    create_association Author, :posts
+  }
 
   it_behaves_like 'a table' do
     let(:table) { association }
+  end
+
+  describe '#initialize' do
+    it 'infers the model from the reflection' do
+      expect(association._scope).to eq(Post)
+    end
+
+    it 'prefers polymorphic klass' do
+      polymorphic = create_association Picture, :imageable, Post
+      expect(polymorphic._scope).to eq(Post)
+    end
   end
 
   describe '#add_to_tree' do
@@ -26,6 +39,20 @@ describe BabySqueel::Association do
       join = make_tree(association.outer)
       expect(join.name).to eq(:posts)
       expect(join.type).to eq(Arel::Nodes::OuterJoin)
+    end
+  end
+
+  describe '#method_missing' do
+    it 'raises a NoMethodError when the wrong number of args are given' do
+      expect { association.author(1) }.to raise_error(NoMethodError)
+    end
+
+    it 'resolves polymorphic associations' do
+      expect(association.pictures.imageable(Post)).to be_a(BabySqueel::Association)
+    end
+
+    it 'throws an error for a polymorphic association without one argument' do
+      expect { association.pictures.imageable }.to raise_error(BabySqueel::PolymorphicNotSpecifiedError)
     end
   end
 

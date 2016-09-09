@@ -25,4 +25,10 @@ ActiveRecord::Schema.define do
     t.belongs_to :author
     t.timestamps null: false
   end
+
+  create_table :pictures, force: true do |t|
+    t.belongs_to :comment
+    t.references :imageable, polymorphic: true
+    t.timestamps null: false
+  end
 end
