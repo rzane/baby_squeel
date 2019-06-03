@@ -64,6 +64,12 @@ module BabySqueel
         @caller = block.binding.eval('self')
         super
       end
+
+      private
+
+      def resolver
+        @resolver ||= BabySqueel::Resolver.new(self, [:function, :column, :association, :table])
+      end
     end
 
     module QueryMethods

@@ -31,6 +31,9 @@ shared_examples_for 'a relation' do
     end
 
     it 'raises a custom error for things that look like columns' do
+      if ENV['COMPAT']
+        skip "This isn't supported in Squeel Compatibility mode"
+      end
       expect { table.non_existent_column }.to raise_error(BabySqueel::NotFoundError)
     end
   end
