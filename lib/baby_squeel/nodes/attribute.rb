@@ -9,6 +9,14 @@ module BabySqueel
         super(parent._table[@name])
       end
 
+      def &(other)
+        boolean_binary_operator(:&, :and, other)
+      end
+
+      def |(other)
+        boolean_binary_operator(:|, :or, other)
+      end
+
       def in(rel)
         if rel.is_a? ::ActiveRecord::Relation
           Nodes.wrap ::Arel::Nodes::In.new(self, sanitize_relation(rel))
@@ -34,6 +42,13 @@ module BabySqueel
       end
 
       private
+
+      def boolean_binary_operator(operator, arel_method, other)
+        lhs = Operators::Grouping.coerce_boolean_attribute(operator, self)
+        rhs = Operators::Grouping.coerce_boolean_attribute(operator, other)
+
+        lhs.send(arel_method, rhs)
+      end
 
       # NullRelation must be treated as a special case, because
       # NullRelation#to_sql returns an empty string. As such,

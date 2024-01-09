@@ -52,8 +52,24 @@ module BabySqueel
 
     module Grouping
       extend ArelAliasing
-      arel_alias :&, :and
-      arel_alias :|, :or
+
+      def self.coerce_boolean_attribute(op, node)
+        return node unless node.is_a?(Arel::Attributes::Attribute)
+
+        unless node.type_caster.type == :boolean
+          raise ArgumentError, "non-boolean attribute #{node.name} passed to #{op}"
+        end
+
+        Arel::Nodes::Equality.new(node, Arel::Nodes::True.new)
+      end
+
+      def &(other)
+        self.and(Grouping.coerce_boolean_attribute(:&, other))
+      end
+
+      def |(other)
+        self.or(Grouping.coerce_boolean_attribute(:|, other))
+      end
     end
 
     module Matching

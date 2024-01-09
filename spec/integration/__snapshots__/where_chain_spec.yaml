@@ -61,3 +61,19 @@
   "posts"."author_id" = 42
 "#where.has wheres an association using #!= 1": SELECT "posts".* FROM "posts" WHERE
   "posts"."author_id" != 42
+"#where.has when using a boolean column coerces a plain boolean column reference to equality at the top-level 1": SELECT
+  "authors".* FROM "authors" WHERE "authors"."ugly" = 1
+"#where.has when using a boolean column coerces a plain boolean column reference to equality on the LHS of an AND 1": SELECT
+  "authors".* FROM "authors" WHERE "authors"."ugly" = 1 AND "authors"."id" = 1
+"#where.has when using a boolean column coerces a plain boolean column reference to equality on the RHS of an AND 1": SELECT
+  "authors".* FROM "authors" WHERE "authors"."id" = 1 AND "authors"."ugly" = 1
+"#where.has when using a boolean column coerces a negated plain boolean column reference to equality at the top-level 1": SELECT
+  "authors".* FROM "authors"
+"#where.has when using a boolean column coerces a plain boolean column reference to equality on the LHS of an OR 1": SELECT
+  "authors".* FROM "authors" WHERE ("authors"."ugly" = 1 OR "authors"."id" = 1)
+"#where.has when using a boolean column coerces a plain boolean column reference to equality on the RHS of an OR 1": SELECT
+  "authors".* FROM "authors" WHERE ("authors"."id" = 1 OR "authors"."ugly" = 1)
+"#where.has when using a boolean column coerces a plain boolean column reference to equality on both sides of an AND 1": SELECT
+  "authors".* FROM "authors" WHERE "authors"."ugly" = 1 AND "authors"."ugly" = 1
+"#where.has when using a boolean column coerces a plain boolean column reference to equality on both sides of an OR 1": SELECT
+  "authors".* FROM "authors" WHERE ("authors"."ugly" = 1 OR "authors"."ugly" = 1)

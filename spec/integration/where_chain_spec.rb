@@ -205,6 +205,64 @@ describe '#where.has' do
 
     expect(bs.to_sql).to eq(ar.to_sql)
   end
+
+  context 'when using a boolean column' do
+    it 'coerces a plain boolean column reference to equality at the top-level' do
+      expect(Author.where.has { ugly }).to match_sql_snapshot
+    end
+
+    it 'raises with a plain non-boolean column reference at the top-level' do
+      expect { Author.where.has { id } }.to raise_error(ArgumentError)
+    end
+
+    it 'coerces a plain boolean column reference to equality on the LHS of an AND' do
+      expect(Author.where.has { ugly & (id == 1) }).to match_sql_snapshot
+    end
+
+    it 'raises with a plain non-boolean column reference on the LHS of an AND' do
+      expect { Author.where.has { id & (id == 1)} }.to raise_error(ArgumentError)
+    end
+
+    it 'coerces a plain boolean column reference to equality on the RHS of an AND' do
+      expect(Author.where.has { (id == 1) & ugly }).to match_sql_snapshot
+    end
+
+    it 'raises with a plain non-boolean column reference on the RHS of an AND' do
+      expect { Author.where.has { (id == 1) & id } }.to raise_error(ArgumentError)
+    end
+
+    it 'coerces a plain boolean column reference to equality on both sides of an AND' do
+      expect(Author.where.has { ugly & ugly }).to match_sql_snapshot
+    end
+
+    it 'raises with plain column references on both sides of an AND where only one is a boolean' do
+      expect { Author.where.has { ugly & id } }.to raise_error(ArgumentError)
+    end
+
+    it 'coerces a plain boolean column reference to equality on the LHS of an OR' do
+      expect(Author.where.has { ugly | (id == 1) }).to match_sql_snapshot
+    end
+
+    it 'raises with a plain non-boolean column reference on the LHS of an OR' do
+      expect { Author.where.has { id | (id == 1)} }.to raise_error(ArgumentError)
+    end
+
+    it 'coerces a plain boolean column reference to equality on the RHS of an OR' do
+      expect(Author.where.has { (id == 1) | ugly }).to match_sql_snapshot
+    end
+
+    it 'raises with a plain non-boolean column reference on the RHS of an OR' do
+      expect { Author.where.has { (id == 1) | id } }.to raise_error(ArgumentError)
+    end
+
+    it 'coerces a plain boolean column reference to equality on both sides of an OR' do
+      expect(Author.where.has { ugly | ugly }).to match_sql_snapshot
+    end
+
+    it 'raises with plain column references on both sides of an OR where only one is a boolean' do
+      expect { Author.where.has { ugly | id } }.to raise_error(ArgumentError)
+    end
+  end
 end
 
 describe '#where_values_hash' do
