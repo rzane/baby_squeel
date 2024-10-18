@@ -119,7 +119,7 @@ module BabySqueel
 
         join_list = join_nodes + joins
 
-        alias_tracker = Associations::AliasTracker.create(relation.klass.connection, relation.table.name, join_list)
+        alias_tracker = Associations::AliasTracker.create(BabySqueel::ActiveRecord::VersionHelper.at_least_7_2? ? relation.klass.connection.pool : relation.klass.connection, relation.table.name, join_list)
         join_dependency = Associations::JoinDependency.new(relation.klass, relation.table, association_joins, Arel::Nodes::InnerJoin)
         join_dependency.instance_variable_set(:@alias_tracker, alias_tracker)
 
