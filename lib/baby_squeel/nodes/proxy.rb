@@ -1,5 +1,3 @@
-require 'baby_squeel/active_record/version_helper'
-
 module BabySqueel
   module Nodes
     # This proxy class allows us to quack like any arel object. When a
