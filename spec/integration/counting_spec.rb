@@ -40,8 +40,14 @@ describe '#counting' do
       Post.group(:author_id).counting { id }
     end
 
-    expect(queries.last).to produce_sql(
-      /COUNT\("posts"."id"\) AS "?count_posts_id/
-    )
+    if ActiveRecord::VERSION::MAJOR >= 8
+      expect(queries.last).to produce_sql(
+        /COUNT\("posts"."id"\) AS "?count_struct_arel_attributes_attribute/
+      )
+    else
+      expect(queries.last).to produce_sql(
+        /COUNT\("posts"."id"\) AS "?count_posts_id/
+      )
+    end
   end
 end

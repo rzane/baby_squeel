@@ -19,7 +19,11 @@ RSpec.describe BabySqueel::Calculation do
     it 'generates a name for expressions' do
       node = table[:id] + table[:view_count]
       calculation = described_class.new(node)
-      expect(calculation.to_s).to eq('posts_id_view_count')
+      if ActiveRecord::VERSION::MAJOR > 7 || (ActiveRecord::VERSION::MAJOR == 7 && ActiveRecord::VERSION::MINOR >= 2)
+        expect(calculation.to_s).to eq('posts_id_posts_view_count')
+      else
+        expect(calculation.to_s).to eq('posts_id_view_count')
+      end
     end
   end
 end

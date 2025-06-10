@@ -34,8 +34,14 @@ describe '#summing' do
       Post.group(:author_id).summing { view_count }
     end
 
-    expect(queries.last).to produce_sql(
-      /SUM\("posts"."view_count"\) AS "?sum_posts_view_count/
-    )
+    if ActiveRecord::VERSION::MAJOR >= 8
+      expect(queries.last).to produce_sql(
+        /SUM\("posts"."view_count"\) AS "?sum_struct_arel_attributes_attribute/
+      )
+    else
+      expect(queries.last).to produce_sql(
+        /SUM\("posts"."view_count"\) AS "?sum_posts_view_count/
+      )
+    end
   end
 end

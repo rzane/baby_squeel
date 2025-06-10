@@ -34,8 +34,14 @@ describe '#maximizing' do
       Post.group(:author_id).maximizing { view_count }
     end
 
-    expect(queries.last).to produce_sql(
-      /MAX\("posts"."view_count"\) AS "?maximum_posts_view_count/
-    )
+    if ActiveRecord::VERSION::MAJOR >= 8
+      expect(queries.last).to produce_sql(
+        /MAX\("posts"."view_count"\) AS "?maximum_struct_arel_attributes_attribute/
+      )
+    else
+      expect(queries.last).to produce_sql(
+        /MAX\("posts"."view_count"\) AS "?maximum_posts_view_count/
+      )
+    end
   end
 end

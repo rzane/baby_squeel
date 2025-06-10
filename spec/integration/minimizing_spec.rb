@@ -34,8 +34,14 @@ describe '#minimizing' do
       Post.group(:author_id).minimizing { view_count }
     end
 
-    expect(queries.last).to produce_sql(
-      /MIN\("posts"."view_count"\) AS "?minimum_posts_view_count/
-    )
+    if ActiveRecord::VERSION::MAJOR >= 8
+      expect(queries.last).to produce_sql(
+        /MIN\("posts"."view_count"\) AS "?minimum_struct_arel_attributes_attribute/
+      )
+    else
+      expect(queries.last).to produce_sql(
+        /MIN\("posts"."view_count"\) AS "?minimum_posts_view_count/
+      )
+    end
   end
 end
