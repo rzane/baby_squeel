@@ -35,14 +35,8 @@ describe '#averaging' do
       Post.group(:author_id).averaging { view_count }
     end
 
-    if ActiveRecord::VERSION::MAJOR >= 8
-      expect(queries.last).to produce_sql(
-        /AVG\("posts"."view_count"\) AS "?average_struct_arel_attributes_attribute/
-      )
-    else
-      expect(queries.last).to produce_sql(
-        /AVG\("posts"."view_count"\) AS "?average_posts_view_count/
-      )
-    end
+    expect(queries.last).to produce_sql(
+      /AVG\("posts"."view_count"\) AS "?average_posts_view_count/
+    )
   end
 end
