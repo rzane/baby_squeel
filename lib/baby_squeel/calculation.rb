@@ -15,7 +15,12 @@ module BabySqueel
     # caching because the alias would have a unique name every
     # time.
     def to_s
-      if node.respond_to?(:map)
+      case node
+      when Arel::Attributes::Attribute
+        # Simple attribute case - handle this specifically to avoid the struct.map issue
+        "#{node.relation.name}_#{node.name}"
+      when Array
+        # Handle array of nodes
         names = node.map do |child|
           if child.kind_of?(String) || child.kind_of?(Symbol)
             child.to_s
@@ -25,8 +30,30 @@ module BabySqueel
         end
         names.compact.uniq.join('_')
       else
-        # fix for https://github.com/rails/rails/commit/fc38ff6e4417295c870f419f7c164ab5a7dbc4a5
-        node.to_sql.split('"').map { |v| v.tr('^A-Za-z0-9_', '').presence }.compact.uniq.join('_')
+        # For complex expressions, try to extract meaningful parts
+        # without calling to_sql which requires a database connection
+        extract_node_name(node)
+      end
+    end
+
+    private
+
+    def extract_node_name(node)
+      case node
+      when Arel::Attributes::Attribute
+        "#{node.relation.name}_#{node.name}"
+      when Arel::Nodes::Binary
+        left_name = extract_node_name(node.left)
+        right_name = extract_node_name(node.right) if node.right.respond_to?(:name) || node.right.respond_to?(:relation)
+        [left_name, right_name].compact.join('_')
+      when Arel::Nodes::Grouping
+        extract_node_name(node.expr)
+      when Arel::Nodes::Function
+        args = node.expressions.map { |expr| extract_node_name(expr) }.compact
+        "#{node.name.downcase}_#{args.join('_')}"
+      else
+        # Fallback to a safe default
+        node.class.name.split('::').last.downcase
       end
     end
   end

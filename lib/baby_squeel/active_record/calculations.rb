@@ -28,14 +28,25 @@ module BabySqueel
         maximum Calculation.new(DSL.evaluate(self, &block))
       end
 
-      private
+      if ::ActiveRecord::VERSION::MAJOR >= 8
+        # @override
+        def calculate(operation, column_name)
+          if column_name.kind_of? Calculation
+            super(operation, column_name.node)
+          else
+            super
+          end
+        end
+      else
+        private
 
-      # @override
-      def aggregate_column(column_name)
-        if column_name.kind_of? Calculation
-          column_name.node
-        else
-          super
+        # @override
+        def aggregate_column(column_name)
+          if column_name.kind_of? Calculation
+            column_name.node
+          else
+            super
+          end
         end
       end
     end
