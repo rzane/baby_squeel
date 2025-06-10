@@ -12,7 +12,7 @@ else
   gem 'activerecord', ENV['AR']
 end
 
-gem 'sqlite3', '~> 2.1'
+gem 'sqlite3', '~> 1.4'
 
 case ENV.fetch('RANSACK', 'latest')
 when 'latest'

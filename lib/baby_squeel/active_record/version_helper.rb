@@ -12,8 +12,7 @@ module BabySqueel
       # end
 
       def self.at_least_7_2?
-        ::ActiveRecord::VERSION::MAJOR > 7 ||
-          (::ActiveRecord::VERSION::MAJOR == 7 && ::ActiveRecord::VERSION::MINOR >= 2)
+        ::ActiveRecord::VERSION::MAJOR == 7 && ::ActiveRecord::VERSION::MINOR >= 2
       end
 
     end
