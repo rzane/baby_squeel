@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+- Droped support for Ruby 3.0 and 3.1
+
 ## [3.0.0] - 2023-11-20
 
 - Added support for ActiveRecord 7.1 (#125)
