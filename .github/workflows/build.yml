@@ -12,7 +12,7 @@ jobs:
       matrix:
         activerecord: ["~> 6.1", "~> 7.0"]
         compat: ["0", "1"]
-        ruby: ["3.2"]
+        ruby: ["3.2", "3.3", "3.4"]
     env:
       AR: ${{ matrix.activerecord }}
       COMPAT: ${{ matrix.compat }}
