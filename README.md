@@ -329,9 +329,14 @@ Check out the [migration guide](https://github.com/rzane/baby_squeel/wiki/Migrat
 
 ## Development
 
-1. Pick an Active Record version to develop against, then export it: `export AR=6.1.4`.
+1. Pick an Active Record version to develop against, then export it: `export AR=7.1.5`.
 2. Run `bin/setup` to install dependencies.
 3. Run `rake` to run the specs.
+
+Onliner to run the specs
+```
+    export AR='~> 7.1.5'; rm Gemfile.lock; bin/setup; rake
+```
 
 You can also run `bin/console` to open up a prompt where you'll have access to some models to experiment with.
 

@@ -145,11 +145,7 @@ describe '#where.has' do
   end
 
   it 'wheres using a simple table' do
-    simple = if Arel::VERSION > '7.0.0'
-                BabySqueel[:authors, type_caster: Author.type_caster]
-              else
-                BabySqueel[:authors]
-              end
+    simple = BabySqueel[:authors, type_caster: Author.type_caster]
 
     relation = Post.joins(:author).where.has {
       simple.name == 'Yo Gotti'
