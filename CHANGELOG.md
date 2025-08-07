@@ -1,5 +1,6 @@
 ## [Unreleased]
 
+- Added support for ActiveRecord 7.2
 - Droped support for ActiveRecord 6.1 and 7.0
 - Added Ruby 3.3 and 3.4 to test matrix
 - Droped support for Ruby 3.0 and 3.1

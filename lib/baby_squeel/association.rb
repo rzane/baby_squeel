@@ -1,5 +1,4 @@
 require 'baby_squeel/relation'
-require 'baby_squeel/active_record/version_helper'
 
 module BabySqueel
   class Association < Relation

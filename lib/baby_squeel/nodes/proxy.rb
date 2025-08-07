@@ -2,7 +2,7 @@ module BabySqueel
   module Nodes
     # This proxy class allows us to quack like any arel object. When a
     # method missing is hit, we'll instantiate a new proxy object.
-    class Proxy < ActiveSupport::ProxyObject
+    class Proxy < BasicObject
       # Resolve constants the normal way
       def self.const_missing(name)
         ::Object.const_get(name)

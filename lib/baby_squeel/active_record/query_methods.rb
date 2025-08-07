@@ -1,6 +1,5 @@
 require 'baby_squeel/dsl'
 require 'baby_squeel/join_dependency'
-require 'baby_squeel/active_record/version_helper'
 
 module BabySqueel
   module ActiveRecord
