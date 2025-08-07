@@ -337,6 +337,7 @@ Onliner to run the specs with different rails versions
 ```
     export AR='~> 7.1.5'; rm Gemfile.lock; bin/setup; rake
     export AR='~> 7.2.2'; rm Gemfile.lock; bin/setup; rake
+    export AR='~> 8.0.2'; rm Gemfile.lock; bin/setup; rake
 ```
 
 You can also run `bin/console` to open up a prompt where you'll have access to some models to experiment with.
