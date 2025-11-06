@@ -12,3 +12,6 @@ test that plain rails still works joins includes 1: SELECT "posts"."id" AS t0_r0
   AS t1_r1, "authors"."age" AS t1_r2, "authors"."ugly" AS t1_r3, "authors"."created_at"
   AS t1_r4, "authors"."updated_at" AS t1_r5 FROM "posts" INNER JOIN "authors" ON "authors"."id"
   = "posts"."author_id"
+'test that plain rails still works left_joins 1 (Active Record: v8.1)': SELECT "posts".*
+  FROM "posts" LEFT OUTER JOIN "posts" AS "parents_posts" ON "parents_posts"."id"
+  = "posts"."parent_id" LEFT OUTER JOIN "authors" ON "authors"."id" = "posts"."author_id"

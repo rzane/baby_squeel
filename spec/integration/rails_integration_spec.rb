@@ -10,7 +10,7 @@ describe 'test that plain rails still works' do
   it 'left_joins' do
     relation = Post.left_joins(:parent, :author)
 
-    expect(relation).to match_sql_snapshot
+    expect(relation).to match_sql_snapshot(variants: ['8.1', '8.2'])
   end
 
   it 'joins includes' do

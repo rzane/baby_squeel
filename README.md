@@ -335,9 +335,10 @@ Check out the [migration guide](https://github.com/rzane/baby_squeel/wiki/Migrat
 
 Onliner to run the specs with different rails versions
 ```
-    export AR='~> 7.1.5'; rm Gemfile.lock; bin/setup; rake
-    export AR='~> 7.2.2'; rm Gemfile.lock; bin/setup; rake
-    export AR='~> 8.0.2'; rm Gemfile.lock; bin/setup; rake
+    export AR='~> 7.1.6'; rm Gemfile.lock; bin/setup; rake
+    export AR='~> 7.2.3'; rm Gemfile.lock; bin/setup; rake
+    export AR='~> 8.0.4'; rm Gemfile.lock; bin/setup; rake
+    export AR='~> 8.1.1'; rm Gemfile.lock; bin/setup; rake
 ```
 
 You can also run `bin/console` to open up a prompt where you'll have access to some models to experiment with.

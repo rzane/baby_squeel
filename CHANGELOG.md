@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+- Remove ActiveRecord boundary
+- Added support for ActiveRecord 8.1
 - Added support for Ransack 4.4 (#134)
 - Added support for ActiveRecord 8.0
 - Added support for ActiveRecord 7.2

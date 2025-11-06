@@ -106,3 +106,53 @@
 "#joining when joining explicitly merges bind values 1": SELECT "posts".* FROM "posts"
   INNER JOIN "authors" ON "authors"."ugly" = 1 AND "authors"."id" = "posts"."author_id"
   INNER JOIN "comments" ON "comments"."author_id" = "authors"."id"
+"#joining when joining explicitly inner joins explicitly with alias 1 (Active Record: v8.1)": SELECT
+  "posts".* FROM "posts" INNER JOIN "authors" AS "a" ON "a"."id" = "posts"."author_id"
+"#joining when joining explicitly self joins with alias 1 (Active Record: v8.1)": SELECT
+  "posts".* FROM "posts" INNER JOIN "posts" AS "meatloaf" ON "posts"."id" = 1
+"#joining when joining explicitly aliases 1 (Active Record: v8.1)": SELECT "posts".*
+  FROM "posts" INNER JOIN "authors" AS "a" ON "authors"."id" = "posts"."author_id"
+"#joining when joining explicitly aliases after the on clause 1 (Active Record: v8.1)": SELECT
+  "posts".* FROM "posts" INNER JOIN "authors" AS "a" ON "authors"."id" = "posts"."author_id"
+"#joining when joining explicitly merges bind values 1 (Active Record: v8.1)": SELECT
+  "posts".* FROM "posts" INNER JOIN "authors" ON "authors"."ugly" = TRUE AND "authors"."id"
+  = "posts"."author_id" INNER JOIN "comments" ON "comments"."author_id" = "authors"."id"
+"#joining when joining implicitly correctly aliases when joining the same table twice 1 (Active Record: v8.1)": SELECT
+  "posts".* FROM "posts" LEFT OUTER JOIN "authors" ON "authors"."id" = "posts"."author_id"
+  LEFT OUTER JOIN "posts" AS "parents_posts" ON "parents_posts"."id" = "posts"."parent_id"
+  LEFT OUTER JOIN "authors" AS "authors_posts" ON "authors_posts"."id" = "parents_posts"."author_id"
+  WHERE ("authors"."name" = 'Rick' OR "authors_posts"."name" = 'Flair')
+? "#joining when joining implicitly correctly identifies a table independenty joined
+  via separate associations 1 (Active Record: v8.1)"
+: SELECT "posts".* FROM "posts" INNER JOIN "authors" ON "authors"."id" = "posts"."author_id"
+  INNER JOIN "comments" ON "comments"."post_id" = "posts"."id" INNER JOIN "authors"
+  AS "authors_comments" ON "authors_comments"."id" = "comments"."author_id" WHERE
+  "authors_comments"."name" = 'Bob'
+"#joining when joining implicitly duplicate prevention when given two DSL joins dedupes incremental joins 1 (Active Record: v8.1)": SELECT
+  "posts".* FROM "posts" INNER JOIN "authors" ON "authors"."id" = "posts"."author_id"
+  INNER JOIN "posts" AS "posts_authors" ON "posts_authors"."author_id" = "authors"."id"
+? "#joining when joining implicitly duplicate prevention when given a DSL join with
+  an Active Record join dedupes through joins 1 (Active Record: v8.1)"
+: SELECT "posts".* FROM "posts" INNER JOIN "authors" ON "authors"."id" = "posts"."author_id"
+  INNER JOIN "posts" AS "posts_authors" ON "posts_authors"."author_id" = "authors"."id"
+  INNER JOIN "authors" AS "authors_posts_join" ON "authors_posts_join"."id" = "posts_authors"."author_id"
+  INNER JOIN "comments" ON "comments"."author_id" = "authors_posts_join"."id" INNER
+  JOIN "authors" AS "authors_posts" ON "authors_posts"."id" = "posts"."author_id"
+  INNER JOIN "posts" AS "posts_authors_2" ON "posts_authors_2"."author_id" = "authors_posts"."id"
+  LEFT OUTER JOIN "authors" AS "authors_posts_join_2" ON "authors_posts_join_2"."id"
+  = "posts_authors_2"."author_id" LEFT OUTER JOIN "comments" AS "author_comments_posts"
+  ON "author_comments_posts"."author_id" = "authors_posts_join_2"."id"
+? "#joining when joining implicitly duplicate prevention when given a DSL join with
+  an Active Record join dedupes incremental outer joins 1 (Active Record: v8.1)"
+: SELECT "posts".* FROM "posts" INNER JOIN "authors" ON "authors"."id" = "posts"."author_id"
+  INNER JOIN "authors" AS "authors_posts" ON "authors_posts"."id" = "posts"."author_id"
+  LEFT OUTER JOIN "comments" ON "comments"."author_id" = "authors_posts"."id"
+? "#joining when joining implicitly duplicate prevention when given a DSL join with
+  an Active Record join dedupes incremental outer joins (in any order) 1 (Active Record:
+  v8.1)"
+: SELECT "posts".* FROM "posts" INNER JOIN "authors" ON "authors"."id" = "posts"."author_id"
+  LEFT OUTER JOIN "comments" ON "comments"."author_id" = "authors"."id" INNER JOIN
+  "authors" AS "authors_posts" ON "authors_posts"."id" = "posts"."author_id"
+"#joining when joining implicitly outer joins multi 1 (Active Record: v8.1)": SELECT
+  "posts".* FROM "posts" LEFT OUTER JOIN "posts" AS "parents_posts" ON "parents_posts"."id"
+  = "posts"."parent_id" LEFT OUTER JOIN "authors" ON "authors"."id" = "posts"."author_id"

@@ -61,3 +61,16 @@
   "posts"."author_id" = 42
 "#where.has wheres an association using #!= 1": SELECT "posts".* FROM "posts" WHERE
   "posts"."author_id" != 42
+"#where.has wheres on an aliased association 1 (Active Record: v8.1)": SELECT "posts".*
+  FROM "posts" INNER JOIN "authors" ON "authors"."id" = "posts"."author_id" INNER
+  JOIN "posts" AS "posts_authors" ON "posts_authors"."author_id" = "authors"."id"
+  WHERE "posts_authors"."id" > 0
+"#where.has wheres on an aliased association with through 1 (Active Record: v8.1)": SELECT
+  "posts".* FROM "posts" INNER JOIN "comments" ON "comments"."post_id" = "posts"."id"
+  INNER JOIN "authors" ON "authors"."id" = "posts"."author_id" INNER JOIN "comments"
+  AS "author_comments_posts" ON "author_comments_posts"."author_id" = "authors"."id"
+  WHERE "author_comments_posts"."id" > 0
+"#where.has wheres on an alias with a function 1 (Active Record: v8.1)": SELECT "posts".*
+  FROM "posts" INNER JOIN "authors" ON "authors"."id" = "posts"."author_id" INNER
+  JOIN "posts" AS "posts_authors" ON "posts_authors"."author_id" = "authors"."id"
+  WHERE coalesce("posts_authors"."id", 1) > 0

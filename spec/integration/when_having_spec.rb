@@ -32,6 +32,6 @@ describe '#when_having' do
                    .grouping { author.posts.id }
                    .when_having { author.posts.id.count > 5 }
 
-    expect(relation).to match_sql_snapshot
+    expect(relation).to match_sql_snapshot(variants: ['8.1', '8.2'])
   end
 end
