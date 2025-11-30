@@ -333,12 +333,13 @@ Check out the [migration guide](https://github.com/rzane/baby_squeel/wiki/Migrat
 2. Run `bin/setup` to install dependencies.
 3. Run `rake` to run the specs.
 
-Onliner to run the specs with different rails versions
+One-liner to run the specs with different rails versions:
+
 ```
-    export AR='~> 7.1.6'; rm Gemfile.lock; bin/setup; rake
-    export AR='~> 7.2.3'; rm Gemfile.lock; bin/setup; rake
-    export AR='~> 8.0.4'; rm Gemfile.lock; bin/setup; rake
-    export AR='~> 8.1.1'; rm Gemfile.lock; bin/setup; rake
+export AR='~> 7.1.6'; rm Gemfile.lock; bin/setup; rake
+export AR='~> 7.2.3'; rm Gemfile.lock; bin/setup; rake
+export AR='~> 8.0.4'; rm Gemfile.lock; bin/setup; rake
+export AR='~> 8.1.1'; rm Gemfile.lock; bin/setup; rake
 ```
 
 You can also run `bin/console` to open up a prompt where you'll have access to some models to experiment with.
