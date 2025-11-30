@@ -58,7 +58,7 @@ describe '#where.has' do
       author.posts.id > 0
     }
 
-    expect(relation).to match_sql_snapshot
+    expect(relation).to match_sql_snapshot(variants: ['8.1', '8.2'])
   end
 
   it 'wheres on an aliased association with through' do
@@ -66,7 +66,7 @@ describe '#where.has' do
       author_comments.id > 0
     }
 
-    expect(relation).to match_sql_snapshot
+    expect(relation).to match_sql_snapshot(variants: ['8.1', '8.2'])
   end
 
   it 'wheres on polymorphic associations' do
@@ -106,7 +106,7 @@ describe '#where.has' do
       coalesce(author.posts.id, 1) > 0
     }
 
-    expect(relation).to match_sql_snapshot
+    expect(relation).to match_sql_snapshot(variants: ['8.1', '8.2'])
   end
 
   it 'wheres with a subquery' do
@@ -145,11 +145,7 @@ describe '#where.has' do
   end
 
   it 'wheres using a simple table' do
-    simple = if Arel::VERSION > '7.0.0'
-                BabySqueel[:authors, type_caster: Author.type_caster]
-              else
-                BabySqueel[:authors]
-              end
+    simple = BabySqueel[:authors, type_caster: Author.type_caster]
 
     relation = Post.joins(:author).where.has {
       simple.name == 'Yo Gotti'

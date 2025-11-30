@@ -23,7 +23,7 @@ describe '#joining' do
         post.author.as('a').on { id == post.author_id }
       }
 
-      expect(relation).to match_sql_snapshot
+      expect(relation).to match_sql_snapshot(variants: ['8.1', '8.2'])
     end
 
     it 'outer joins' do
@@ -51,7 +51,7 @@ describe '#joining' do
         on(id == 1).alias('meatloaf')
       }
 
-      expect(relation).to match_sql_snapshot
+      expect(relation).to match_sql_snapshot(variants: ['8.1', '8.2'])
     end
 
     it 'aliases' do
@@ -59,7 +59,7 @@ describe '#joining' do
         author.alias('a').on(author.id == author_id)
       }
 
-      expect(relation).to match_sql_snapshot
+      expect(relation).to match_sql_snapshot(variants: ['8.1', '8.2'])
     end
 
     it 'aliases after the on clause' do
@@ -67,13 +67,13 @@ describe '#joining' do
         author.on(author.id == author_id).alias('a')
       }
 
-      expect(relation).to match_sql_snapshot
+      expect(relation).to match_sql_snapshot(variants: ['8.1', '8.2'])
     end
 
     it 'merges bind values' do
       relation = Post.joining { ugly_author_comments }
 
-      expect(relation).to match_sql_snapshot
+      expect(relation).to match_sql_snapshot(variants: ['8.1', '8.2'])
     end
 
     context 'with complex conditions' do
@@ -118,7 +118,7 @@ describe '#joining' do
       it 'multi' do
         relation = Post.joining { parent.outer }.joining { author.outer }
 
-        expect(relation).to match_sql_snapshot
+        expect(relation).to match_sql_snapshot(variants: ['8.1', '8.2'])
         expect(relation).to produce_sql(Post.joining { [parent.outer, author.outer] })
         expect(relation).to produce_sql(Post.left_joins(:parent).left_joins(:author))
         expect(relation).to produce_sql(Post.joining { parent.outer }.left_joins(:author))
@@ -135,7 +135,7 @@ describe '#joining' do
         (author.outer.name == 'Rick') | (parent.outer.author.outer.name == 'Flair')
       end
 
-      expect(relation).to match_sql_snapshot
+      expect(relation).to match_sql_snapshot(variants: ['8.1', '8.2'])
     end
 
     describe 'polymorphism' do
@@ -243,7 +243,7 @@ describe '#joining' do
         it 'dedupes incremental joins' do
           relation = Post.joining { author }.joining { author.posts }
 
-          expect(relation).to match_sql_snapshot
+          expect(relation).to match_sql_snapshot(variants: ['8.1', '8.2'])
         end
       end
 
@@ -263,19 +263,19 @@ describe '#joining' do
                          .joining { author.posts.author_comments.outer }
 
           # There are duplicate inner joins in here, but that'll have to do...
-          expect(relation).to match_sql_snapshot
+          expect(relation).to match_sql_snapshot(variants: ['8.1', '8.2'])
         end
 
         it 'dedupes incremental outer joins' do
           relation = Post.joins(:author).joining { author.comments.outer }
 
-          expect(relation).to match_sql_snapshot
+          expect(relation).to match_sql_snapshot(variants: ['8.1', '8.2'])
         end
 
         it 'dedupes incremental outer joins (in any order)' do
           relation = Post.joining { author.comments.outer }.joins(:author)
 
-          expect(relation).to match_sql_snapshot
+          expect(relation).to match_sql_snapshot(variants: ['8.1', '8.2'])
         end
       end
 
@@ -324,7 +324,7 @@ describe '#joining' do
         comments.author.name == 'Bob'
       }
 
-      expect(relation.to_sql).to match_sql_snapshot
+      expect(relation.to_sql).to match_sql_snapshot(variants: ['8.1', '8.2'])
     end
   end
 end

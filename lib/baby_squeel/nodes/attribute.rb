@@ -35,19 +35,8 @@ module BabySqueel
 
       private
 
-      # NullRelation must be treated as a special case, because
-      # NullRelation#to_sql returns an empty string. As such,
-      # we need to convert the NullRelation to regular relation.
-      # Conveniently, this approach automatically adds a 1=0.
-      # I have literally no idea why, but I'll take it.
       def sanitize_relation(rel)
-        if ::ActiveRecord::VERSION::MAJOR < 7 && rel.kind_of?(::ActiveRecord::NullRelation)
-          other = rel.spawn
-          other.extending_values -= [::ActiveRecord::NullRelation]
-          sanitize_relation rel.unscoped.merge(other)
-        else
-          Arel.sql rel.to_sql
-        end
+        Arel.sql(rel.to_sql)
       end
     end
   end

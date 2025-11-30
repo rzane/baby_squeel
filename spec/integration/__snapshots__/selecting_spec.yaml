@@ -10,3 +10,6 @@
 "#selecting selects on an aliased table 1": SELECT "posts_authors"."id" FROM "posts"
   INNER JOIN "authors" ON "authors"."id" = "posts"."author_id" INNER JOIN "posts"
   "posts_authors" ON "posts_authors"."author_id" = "authors"."id"
+"#selecting selects on an aliased table 1 (Active Record: v8.1)": SELECT "posts_authors"."id"
+  FROM "posts" INNER JOIN "authors" ON "authors"."id" = "posts"."author_id" INNER
+  JOIN "posts" AS "posts_authors" ON "posts_authors"."author_id" = "authors"."id"

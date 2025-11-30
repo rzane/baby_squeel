@@ -1,5 +1,14 @@
 ## [Unreleased]
 
+- Remove ActiveRecord boundary
+- Added support for ActiveRecord 8.1
+- Added support for Ransack 4.4 (#134)
+- Added support for ActiveRecord 8.0
+- Added support for ActiveRecord 7.2
+- Droped support for ActiveRecord 6.1 and 7.0
+- Added Ruby 3.3 and 3.4 to test matrix
+- Droped support for Ruby 3.0 and 3.1
+
 ## [3.0.0] - 2023-11-20
 
 - Added support for ActiveRecord 7.1 (#125)

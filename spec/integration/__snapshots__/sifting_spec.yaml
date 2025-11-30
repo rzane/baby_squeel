@@ -9,3 +9,8 @@ BabySqueel::ActiveRecord::Base#sifter yield the root table to the block when ari
   INNER JOIN "authors" ON "authors"."id" = "posts"."author_id" INNER JOIN "comments"
   "author_comments_posts" ON "author_comments_posts"."author_id" = "authors"."id"
   WHERE "author_comments_posts"."id" > 1
+'BabySqueel::ActiveRecord::Base#sifter yield the root table to the block when arity is given 1 (Active Record: v8.1)': SELECT
+  "posts".* FROM "posts" INNER JOIN "comments" ON "comments"."post_id" = "posts"."id"
+  INNER JOIN "authors" ON "authors"."id" = "posts"."author_id" INNER JOIN "comments"
+  AS "author_comments_posts" ON "author_comments_posts"."author_id" = "authors"."id"
+  WHERE "author_comments_posts"."id" > 1

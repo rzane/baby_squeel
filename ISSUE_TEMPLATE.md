@@ -11,7 +11,7 @@ require 'minitest/autorun'
 
 gemfile true do
   source 'https://rubygems.org'
-  gem 'activerecord', '~> 7.0.0' # which Active Record version?
+  gem 'activerecord', '~> 7.1.5' # which Active Record version?
   gem 'sqlite3'
   gem 'baby_squeel', github: 'rzane/baby_squeel'
 end

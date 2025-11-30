@@ -4,10 +4,6 @@ require 'active_record/relation'
 require 'polyamorous/polyamorous'
 require 'baby_squeel/version'
 require 'baby_squeel/errors'
-require 'baby_squeel/active_record/base'
-require 'baby_squeel/active_record/query_methods'
-require 'baby_squeel/active_record/calculations'
-require 'baby_squeel/active_record/where_chain'
 
 module BabySqueel
   class << self
@@ -43,6 +39,11 @@ module BabySqueel
 end
 
 ActiveSupport.on_load :active_record do
+  require 'baby_squeel/active_record/base'
+  require 'baby_squeel/active_record/query_methods'
+  require 'baby_squeel/active_record/calculations'
+  require 'baby_squeel/active_record/where_chain'
+
   ::ActiveRecord::Base.extend BabySqueel::ActiveRecord::Base
   ::ActiveRecord::Relation.prepend BabySqueel::ActiveRecord::QueryMethods
   ::ActiveRecord::Relation.prepend BabySqueel::ActiveRecord::Calculations

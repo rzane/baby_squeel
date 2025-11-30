@@ -28,7 +28,7 @@ module BabySqueel
         maximum Calculation.new(DSL.evaluate(self, &block))
       end
 
-      private
+      protected
 
       # @override
       def aggregate_column(column_name)

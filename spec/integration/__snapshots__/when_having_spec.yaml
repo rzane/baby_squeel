@@ -11,3 +11,8 @@
   FROM "posts" INNER JOIN "authors" ON "authors"."id" = "posts"."author_id" INNER
   JOIN "posts" "posts_authors" ON "posts_authors"."author_id" = "authors"."id" GROUP
   BY "posts_authors"."id" HAVING COUNT("posts_authors"."id") > 5
+"#when_having adds a having clause with an aliased table 1 (Active Record: v8.1)": SELECT
+  COUNT("posts_authors"."id") FROM "posts" INNER JOIN "authors" ON "authors"."id"
+  = "posts"."author_id" INNER JOIN "posts" AS "posts_authors" ON "posts_authors"."author_id"
+  = "authors"."id" GROUP BY "posts_authors"."id" HAVING COUNT("posts_authors"."id")
+  > 5

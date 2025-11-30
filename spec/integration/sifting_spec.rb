@@ -42,6 +42,6 @@ describe BabySqueel::ActiveRecord::Base, '#sifter' do
       sift :author_comments_id, 1
     }
 
-    expect(relation).to match_sql_snapshot
+    expect(relation).to match_sql_snapshot(variants: ['8.1', '8.2'])
   end
 end

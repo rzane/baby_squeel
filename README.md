@@ -329,11 +329,28 @@ Check out the [migration guide](https://github.com/rzane/baby_squeel/wiki/Migrat
 
 ## Development
 
-1. Pick an Active Record version to develop against, then export it: `export AR=6.1.4`.
+1. Pick an Active Record version to develop against, then export it: `export AR=7.2.2`.
 2. Run `bin/setup` to install dependencies.
 3. Run `rake` to run the specs.
 
+Onliner to run the specs with different rails versions
+```
+    export AR='~> 7.1.6'; rm Gemfile.lock; bin/setup; rake
+    export AR='~> 7.2.3'; rm Gemfile.lock; bin/setup; rake
+    export AR='~> 8.0.4'; rm Gemfile.lock; bin/setup; rake
+    export AR='~> 8.1.1'; rm Gemfile.lock; bin/setup; rake
+```
+
 You can also run `bin/console` to open up a prompt where you'll have access to some models to experiment with.
+
+## Rails update
+
+1. Update [baby_squeel.gemspec](baby_squeel.gemspec)
+2. Add the version to test matrix [build.yml](.github/workflows/build.yml)
+3. Update development section in the [README.md](README.md)
+4. If you need to change the code consider to add a version check methode in [version_helper.rb](lib/baby_squeel/active_record/version_helper.rb)
+5. Run the specs with all supported versions
+6. Add comment to the unreleased section in [CHANGELOG.md](CHANGELOG.md)
 
 ## Contributing
 
