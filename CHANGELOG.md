@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+## [4.0.0] - 2024-11-29
+
 - Remove ActiveRecord boundary
 - Added support for ActiveRecord 8.1
 - Added support for Ransack 4.4 (#134)
@@ -253,7 +255,8 @@
 
 - Initial support for selects, orders, wheres, and joins.
 
-[unreleased]: https://github.com/rzane/baby_squeel/compare/v3.0.0...HEAD
+[unreleased]: https://github.com/rzane/baby_squeel/compare/v4.0.0...HEAD
+[4.0.0]: https://github.com/rzane/baby_squeel/compare/v3.0.0...v4.0.0
 [3.0.0]: https://github.com/rzane/baby_squeel/compare/v2.0.0...v3.0.0
 [2.0.0]: https://github.com/rzane/baby_squeel/compare/v1.4.4...v2.0.0
 [1.4.4]: https://github.com/rzane/baby_squeel/compare/v1.4.3...v1.4.4
